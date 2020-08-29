@@ -8,11 +8,18 @@
 // });
 
 // EXPRESS SERVER
+
+const config = require('./config')
+//const cardController = require('./controller/cardController')
+const cardRouter = require('./routers/cardRoute')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({extended: false});
+
+app.use('/', cardRouter)
 
 app.get("/register", urlencodedParser, function (request, response) {
     response.sendFile(__dirname + "/register.html");
@@ -22,7 +29,6 @@ app.post("/register", urlencodedParser, function (request, response) {
     console.log(request.body);
     response.send(`${request.body.userName} - ${request.body.userAge}`);
 });
-  
 app.get("/", function(request, response){
     response.send("Главная страница");
 });
@@ -30,6 +36,6 @@ app.get("/", function(request, response){
 
 
 
-app.listen(3000, ()=>{
-    console.log('listening 3000 port')
+app.listen(config.port, ()=>{
+    console.log(`listening ${config.port} port`)
 })
