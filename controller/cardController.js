@@ -1,7 +1,9 @@
+const cards = require('../schema/card.js')
+
 exports.getCard = (req,res) => {
     res.send(`
         <form action="/cards" method="post">
-            <input type="text"name="text">
+            <input type="text" name="text">
             <input type="submit">
         </form>
     `)

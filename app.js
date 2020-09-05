@@ -15,11 +15,12 @@ const cardRouter = require('./routers/cardRoute')
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongo = require('mongoose')
 
 const app = express()
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 
-app.use('/', cardRouter)
+app.use('/', urlencodedParser, cardRouter)
 
 app.get("/register", urlencodedParser, function (request, response) {
     response.sendFile(__dirname + "/register.html");
@@ -29,13 +30,15 @@ app.post("/register", urlencodedParser, function (request, response) {
     console.log(request.body);
     response.send(`${request.body.userName} - ${request.body.userAge}`);
 });
+
 app.get("/", function(request, response){
     response.send("Главная страница");
 });
 
 
-
-
-app.listen(config.port, ()=>{
-    console.log(`listening ${config.port} port`)
-})
+mongo.connect(config.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, function(err){
+    if(err) return console.log(err);
+    app.listen(3000, function(){
+        console.log(`listening ${config.port} port`);
+    });
+});
